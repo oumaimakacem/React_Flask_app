@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import FormButton from './component/FormButton2';
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody,  MDBBtn, MDBIcon, MDBModalFooter } from 'mdbreact';
 function App() {
-  const [prediction, setprediction] = useState();
+  const [prediction, setprediction] = useState(0);
 
   const [laboratory_test_L, setLaboratory_test_L] = useState(0)
   const [laboratory_test_N, setLaboratory_test_N] = useState(0)
@@ -79,11 +79,16 @@ var handle17Change = (text) => {
   setSymptoms_Fatigue(text)
 };
 
+
+fetch('/',
+{ 
+  method:"POST",
+  body :JSON . stringify({ 'Laboratory_test_L':laboratory_test_L, 'Laboratory_test_N':laboratory_test_N, 'Laboratory_test_ESR_(mm/hr)':laboratory_test_ESR, 'Laboratory_test_CRP_(mg/L)':laboratory_test_CRP, 'Laboratory_test_PCT_(ng/ml)':laboratory_test_PCT, 'Laboratory_test_CK_MB_(ng/ml)':laboratory_test_CK_MB, 'Laboratory_test_D_dimer_(ug/ml)':laboratory_test_D_dimer, 'Laboratory_test_ALT_(U/L)':laboratory_test_ALT, 'Laboratory_test_AST_(U/L)':laboratory_test_AST, 'Laboratory_test_ALB_(g/L)':laboratory_test_ALB, 'Laboratory_test_LDH_(U/L)':laboratory_test_LDH, 'Age':age, 'CK':cK, 'O2%':o2, 'Symptoms_Cough':symptoms_Cough, 'Symptoms_Dyspnea':symptoms_Dyspnea, 'Symptoms_Fatigue':symptoms_Fatigue,
+})
+  ,})
   
 useEffect(() => {
-  fetch('/predict',{method:"POST",
-  body :JSON . stringify({ 'Laboratory_test_L':laboratory_test_L, 'Laboratory_test_N':laboratory_test_N, 'Laboratory_test_ESR_(mm/hr)':laboratory_test_ESR, 'Laboratory_test_CRP_(mg/L)':laboratory_test_CRP, 'Laboratory_test_PCT_(ng/ml)':laboratory_test_PCT, 'Laboratory_test_CK_MB_(ng/ml)':laboratory_test_CK_MB, 'Laboratory_test_D_dimer_(ug/ml)':laboratory_test_D_dimer, 'Laboratory_test_ALT_(U/L)':laboratory_test_ALT, 'Laboratory_test_AST_(U/L)':laboratory_test_AST, 'Laboratory_test_ALB_(g/L)':laboratory_test_ALB, 'Laboratory_test_LDH_(U/L)':laboratory_test_LDH, 'Age':age, 'CK':cK, 'O2%':o2, 'Symptoms_Cough':symptoms_Cough, 'Symptoms_Dyspnea':symptoms_Dyspnea, 'Symptoms_Fatigue':symptoms_Fatigue,
-})})
+  fetch('/predict')
     .then(res => res.json())
       .then(data => {
         setprediction(data.pred);
@@ -120,10 +125,11 @@ useEffect(() => {
        <FormInput placeholder="symptoms_Cough" type="decimal-pad"type="number" onChangeText={handle15Change}required />
        <FormInput placeholder="symptoms_Dyspnea" type="decimal-pad"type="number" onChangeText={handle16Change} required/>
        <FormInput placeholder="symptoms_Fatigue" type="decimal-pad"type="number" onChangeText={handle17Change} required/>
-       <FormButton class="p-3" title="Predict"/>
+       <FormButton class="p-3" title="Predict" />
        
        </form> 
-       <p> "prediction est "{prediction}</p>
+       <p> "prediction est "{prediction}</p> 
+                    
                     </MDBCard>
                   </MDBCol>
                 </MDBRow>

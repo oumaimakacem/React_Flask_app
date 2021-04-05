@@ -13,7 +13,7 @@ app.secret_key="hello"
 global prediction
 model = pickle.load(open('grad_correct scaling.pkl', 'rb'))
 scaler = pickle.load(open('min_max_scaler scaling.pkl', 'rb'))
-@app.route("/predict",methods=["POST"])
+@app.route("/",methods=["POST"])
 def index():
     if request.method == "POST":
         request_data= json.loads(request.data)
@@ -29,9 +29,19 @@ def index():
         if pred ==1 :
             prediction="severe"
         print("severity prediction",prediction)
+        #session["prediction"] = prediction
+        return redirect(url_for('predictt'))
 
-        resulat=jsonify({'pred':prediction})
-        return resulat 
+    
+
+@app.route("/predict")
+def predictt():
+    
+    #var =session.get("prediction")
+    print("redirected")
+    #resulat=jsonify({'pred': var})
+    resulat=jsonify({'pred':"redicredc"})
+    return resulat 
     #### refraichir react to get the final value, and make sure the data are not passed (not on change, submit issue)
 
    
